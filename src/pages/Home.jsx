@@ -1,78 +1,91 @@
+import { fetchEvents } from 'api/api';
 import EventList from 'components/EventList/EventList';
-import React, { useEffect, useState } from 'react';
+import Filter from 'components/Filter/Filter';
+import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
-import { fetchEvents } from '../redux/eventApi/operations';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [select, setSelect] = useState('');
-  const [loading, setIsloading] = useState(false);
-  const [counter, setCounter] = useState(1);
 
-  const loadMoreEvents = () => {
-    setCounter(prevCounter => prevCounter + 1);
+  const bottomBoundaryRef = useRef(null);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const data = await fetchEvents(page);
+      setEvents(prevEvents => [...prevEvents, ...data.events]);
+      const isLoadMore = page < Math.ceil(data.totalEvents / 9);
+      if (!isLoadMore) {
+        toast('Events are over');
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    const receiveData = async () => {
-      setIsloading(true);
-      try {
-        const data = await fetchEvents(counter);
-        setEvents(prevEvents => [...prevEvents, ...data.events]);
+    fetchData();
+  }, [page]);
 
-        const isEnd = counter < Math.ceil(data.totalEvents / 9);
-
-        setTotalPages(isEnd);
-        if (!isEnd) {
-          toast('The events are about to end.');
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          setPage(prevPage => prevPage + 1);
         }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsloading(false);
+      },
+      { threshold: 1 }
+    );
+
+    if (bottomBoundaryRef.current) {
+      observer.observe(bottomBoundaryRef.current);
+    }
+
+    return () => {
+      if (bottomBoundaryRef.current) {
+        observer.unobserve(bottomBoundaryRef.current);
       }
     };
+  }, []);
 
-    receiveData();
-  }, [counter]);
-
-  const modify = e => {
+  const onChange = e => {
     if (!e) return;
-
     setSelect(e.value);
   };
 
-  const sortFunctions = {
-    name: (event1, event2) => event1.label.localeCompare(event2.label),
-    date: (event1, event2) =>
-      new Date(event1.start_date) - new Date(event2.start_date),
-    organizer: (event1, event2) => event1.owner.localeCompare(event2.owner),
-  };
-
-  const rearrangedList = [...events].sort((event1, event2) => {
-    const chosen = select;
-    const sortFunction = sortFunctions[chosen];
-
-    if (sortFunction) {
-      return sortFunction(event1, event2);
-    } else {
-      return events;
+  const sortedList = [...events].sort((event1, event2) => {
+    switch (select) {
+      case 'name':
+        return event1.title.localeCompare(event2.title);
+      case 'date':
+        return new Date(event1.event_date) - new Date(event2.event_date);
+      case 'organizer':
+        return event1.organizer.localeCompare(event2.organizer);
+      default:
+        return 0;
     }
   });
 
   return (
     <div>
-      <h1>Events</h1>
-      {error && <p>error</p>}
+      <h1>Upcoming Events</h1>
+      {error && <p>{error}</p>}
 
       {events.length > 0 && (
         <>
-          {/* <Filter onChange={onChange} /> */}
-          <EventList events={rearrangedList} />
-          {/* {totalPages && <div ref={ref}></div>} */}
+          <Filter onChange={onChange} />
+          <ul>
+            {sortedList.map(event => (
+              <EventList key={event._id} event={event} />
+            ))}
+          </ul>
+          <div ref={bottomBoundaryRef}></div>
         </>
       )}
     </div>

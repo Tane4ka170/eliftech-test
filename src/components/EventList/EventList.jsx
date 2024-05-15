@@ -1,38 +1,23 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { fetchEvents } from '../../redux/eventApi/operations';
 
-const EventList = () => {
-  const dispatch = useDispatch();
-  const events = useSelector(state => state.events.events);
-
-  useEffect(() => {
-    dispatch(fetchEvents());
-  }, [dispatch]);
-
-  const eventList = events.map(event => {
-    const { _id, title, description, eventDate, organizer } = event;
-
-    return (
-      <li key={_id}>
+const EventList = ({ event }) => {
+  const { _id, title, description, eventDate, organizer } = event;
+  return (
+    <li>
+      <div>
+        <h3>{title}</h3>
         <div>
-          <h3>{title}</h3>
-          <div>
-            <p>{eventDate}</p>
-            <p>{organizer}</p>
-          </div>
+          <p>{eventDate}</p>
+          <p>{organizer}</p>
         </div>
-        <p>{description}</p>
-        <div>
-          <NavLink to={`registration/${_id}`}>Register</NavLink>
-          <NavLink to={`participants/${_id}`}>View</NavLink>
-        </div>
-      </li>
-    );
-  });
-
-  return eventList;
+      </div>
+      <p>{description}</p>
+      <div>
+        <NavLink to={`registration/${_id}`}>Register</NavLink>
+        <NavLink to={`participants/${_id}`}>View</NavLink>
+      </div>
+    </li>
+  );
 };
 
 export default EventList;
