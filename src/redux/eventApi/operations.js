@@ -7,7 +7,7 @@ export const fetchEvents = createAsyncThunk(
   'events/fetchEvents',
   async (page, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`/?page=${page}&limit=10`);
+      const { data } = await axios.get(`/?page=${page}&limit=9`);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
