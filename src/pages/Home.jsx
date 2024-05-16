@@ -5,6 +5,22 @@ import { Loader } from 'components/Loader/Loader';
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 
+const fetchData = async (page, setEvents, setIsLoading, setPage, setError) => {
+  setIsLoading(true);
+  try {
+    const data = await fetchEvents(page);
+    setEvents(prevEvents => [...prevEvents, ...data.events]);
+    const isLoadMore = page < Math.ceil(data.totalEvents / 9);
+    if (!isLoadMore) {
+      toast('Events are over');
+    }
+  } catch (error) {
+    setError(error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
@@ -14,25 +30,9 @@ const Home = () => {
 
   const bottomBoundaryRef = useRef(null);
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchEvents(page);
-      setEvents(prevEvents => [...prevEvents, ...data.events]);
-      const isLoadMore = page < Math.ceil(data.totalEvents / 9);
-      if (!isLoadMore) {
-        toast('Events are over');
-      }
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
-  }, [page]);
+    fetchData(page, setEvents, setIsLoading, setPage, setError);
+  }, [page, setEvents, setIsLoading, setPage, setError]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -54,7 +54,7 @@ const Home = () => {
         observer.unobserve(currentRef);
       }
     };
-  }, [loading]);
+  }, [loading, setPage]);
 
   const onChange = e => {
     if (!e) return;
