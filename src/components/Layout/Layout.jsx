@@ -1,27 +1,26 @@
 import React, { Suspense } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import { Container, Header, Logo, Main, Nav } from './Layout.styled';
 
 const Layout = () => {
   return (
-    <>
-      <header>
-        <div>
-          <NavLink to="/">Events</NavLink>
-          <nav>
-            <ul>
-              <li>
-                <NavLink to="/">Home</NavLink>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-      <main>
+    <Container>
+      <Header>
+        <Logo to="/">Events</Logo>
+        <Nav>
+          <ul>
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+          </ul>
+        </Nav>
+      </Header>
+      <Main>
         <Suspense fallback={null}>
           <Outlet />
         </Suspense>
-      </main>
-    </>
+      </Main>
+    </Container>
   );
 };
 
