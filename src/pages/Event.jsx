@@ -1,5 +1,6 @@
 import { getEventParticipants } from 'api/api';
 import Input from 'components/Input/Input';
+import ParticipantsList from 'components/ParticipantsList/ParticipantsList';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -26,18 +27,19 @@ const Event = () => {
       participant.fullName.toLowerCase().includes(filter.toLowerCase()) ||
       participant.email.toLowerCase().includes(filter.toLowerCase())
   );
+
   return (
     <div>
       {participants.length > 0 ? (
         <>
           <Input onChange={e => setFilter(e.target.value)} />
-          {filteredParticipants.length > 0 ? (
-            <>
-              {/* <ParticipantsList participants={filteredParticipants} /> */}
-            </>
-          ) : (
-            <p>No participants match the filter</p>
-          )}
+          <ul>
+            {filteredParticipants.length > 0 ? (
+              <ParticipantsList participants={filteredParticipants} />
+            ) : (
+              <p>No participants match the filter</p>
+            )}
+          </ul>
         </>
       ) : (
         <>

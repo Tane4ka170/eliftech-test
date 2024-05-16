@@ -12,9 +12,6 @@ const Layout = () => {
               <li>
                 <NavLink to="/">Home</NavLink>
               </li>
-              <li>
-                <NavLink>Add Event</NavLink>
-              </li>
             </ul>
           </nav>
         </div>

@@ -14,7 +14,7 @@ const EventList = ({ event }) => {
       <p>{description}</p>
       <div>
         <NavLink to={`registration/${_id}`}>Register</NavLink>
-        <NavLink to={`participants/${_id}`}>View</NavLink>
+        <NavLink to={`event/${_id}`}>View</NavLink>
       </div>
     </li>
   );
