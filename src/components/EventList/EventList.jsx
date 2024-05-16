@@ -1,22 +1,29 @@
-import { NavLink } from 'react-router-dom';
+import {
+  ActionContainer,
+  ActionLink,
+  Info,
+  InfoContainer,
+  ListItem,
+  Title,
+} from './EventList.styled';
 
 const EventList = ({ event }) => {
   const { _id, title, description, eventDate, organizer } = event;
   return (
-    <li>
+    <ListItem>
       <div>
-        <h3>{title}</h3>
-        <div>
-          <p>{eventDate}</p>
-          <p>{organizer}</p>
-        </div>
+        <Title>{title}</Title>
+        <InfoContainer>
+          <Info>{eventDate}</Info>
+          <Info>{organizer}</Info>
+        </InfoContainer>
       </div>
       <p>{description}</p>
-      <div>
-        <NavLink to={`event/${_id}/register`}>Register</NavLink>
-        <NavLink to={`event/${_id}`}>View</NavLink>
-      </div>
-    </li>
+      <ActionContainer>
+        <ActionLink to={`event/${_id}/register`}>Register</ActionLink>
+        <ActionLink to={`event/${_id}`}>View</ActionLink>
+      </ActionContainer>
+    </ListItem>
   );
 };
 

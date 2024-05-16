@@ -4,6 +4,14 @@ import Filter from 'components/Filter/Filter';
 import { Loader } from 'components/Loader/Loader';
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
+import {
+  BottomBoundary,
+  ErrorMessage,
+  EventsContainer,
+  ListContainer,
+  MainContainer,
+  Title,
+} from './Home.styled';
 
 const fetchData = async (page, setEvents, setIsLoading, setPage, setError) => {
   setIsLoading(true);
@@ -75,23 +83,23 @@ const Home = () => {
   });
 
   return (
-    <div>
-      <h1>Upcoming Events</h1>
-      {error && <p>{error}</p>}
+    <MainContainer>
+      <Title>Upcoming Events</Title>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
 
       {events.length > 0 && (
-        <>
+        <EventsContainer>
           <Filter onChange={onChange} />
-          <ul>
+          <ListContainer>
             {sortedList.map(event => (
               <EventList key={event._id} event={event} />
             ))}
-          </ul>
-          <div ref={bottomBoundaryRef}></div>
+          </ListContainer>
+          <BottomBoundary ref={bottomBoundaryRef}></BottomBoundary>
           {loading && <Loader />}
-        </>
+        </EventsContainer>
       )}
-    </div>
+    </MainContainer>
   );
 };
 
