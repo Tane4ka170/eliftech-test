@@ -1,9 +1,9 @@
-import Select from 'react-select';
+import { CustomSelect, FilterContainer } from './Filter.styled';
 
 const Filter = ({ onChange }) => {
   return (
-    <div>
-      <Select
+    <FilterContainer>
+      <CustomSelect
         options={[
           { value: 'name', label: 'Name' },
           { value: 'date', label: 'Date' },
@@ -14,7 +14,7 @@ const Filter = ({ onChange }) => {
         className="basic-single"
         classNamePrefix="select"
       />
-    </div>
+    </FilterContainer>
   );
 };
 
