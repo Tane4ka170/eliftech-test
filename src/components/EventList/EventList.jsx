@@ -13,7 +13,7 @@ const EventList = ({ event }) => {
       </div>
       <p>{description}</p>
       <div>
-        <NavLink to={`registration/${_id}`}>Register</NavLink>
+        <NavLink to={`event/${_id}/register`}>Register</NavLink>
         <NavLink to={`event/${_id}`}>View</NavLink>
       </div>
     </li>

@@ -7,7 +7,7 @@ export const addToEventSchema = Yup.object().shape({
   email: Yup.string().email().required(),
   dateOfBirth: Yup.date()
     .required('Please enter your date of birth')
-    .min(new Date(), 'Date of birth cannot be in the future'),
+    .max(new Date(), 'Date of birth cannot be in the future'),
   source: Yup.string()
     .oneOf(
       ['social media', 'friends', 'found myself'],

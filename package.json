@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://Tane4ka170.github.io/eliftech-test/",
   "dependencies": {
+    "@hookform/resolvers": "^3.4.0",
     "@reduxjs/toolkit": "^2.2.4",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
@@ -12,6 +13,7 @@
     "browser-router": "^0.2.0",
     "react": "^18.1.0",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.48.2",
     "react-hot-toast": "^2.4.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-loader-spinner": "^6.1.6",

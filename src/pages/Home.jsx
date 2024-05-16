@@ -1,6 +1,7 @@
 import { fetchEvents } from 'api/api';
 import EventList from 'components/EventList/EventList';
 import Filter from 'components/Filter/Filter';
+import { Loader } from 'components/Loader/Loader';
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 
@@ -36,23 +37,24 @@ const Home = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !loading) {
           setPage(prevPage => prevPage + 1);
         }
       },
       { threshold: 1 }
     );
 
-    if (bottomBoundaryRef.current) {
-      observer.observe(bottomBoundaryRef.current);
+    const currentRef = bottomBoundaryRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (bottomBoundaryRef.current) {
-        observer.unobserve(bottomBoundaryRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
-  }, []);
+  }, [loading]);
 
   const onChange = e => {
     if (!e) return;
@@ -86,6 +88,7 @@ const Home = () => {
             ))}
           </ul>
           <div ref={bottomBoundaryRef}></div>
+          {loading && <Loader />}
         </>
       )}
     </div>
