@@ -1,7 +1,9 @@
+import { InputField } from './Input.styled';
+
 const Input = ({ onChange }) => {
   return (
     <>
-      <input
+      <InputField
         type="text"
         name="filter"
         onChange={onChange}
