@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addForEvent, getEventParticipants } from 'api/api';
 import { useForm } from 'react-hook-form';
 import { addToEventSchema } from 'schemas/schemas';
-import { Loader } from 'components/Loader/Loader';
 import toast from 'react-hot-toast';
 import {
   ErrorMsg,

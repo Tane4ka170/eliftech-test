@@ -1,17 +1,24 @@
 import React from 'react';
+import {
+  ParticipantDetail,
+  ParticipantEmail,
+  ParticipantInfo,
+  ParticipantListItem,
+  ParticipantName,
+} from './ParticipantsList.styled';
 
 const ParticipantsList = ({ participants }) => {
   return (
     <>
       {participants.map(participant => (
-        <li key={participant._id}>
-          <div>
-            <div>
-              <p>{participant.fullName}</p>
-              <p>{participant.email}</p>
-            </div>
-          </div>
-        </li>
+        <ParticipantListItem key={participant._id}>
+          <ParticipantInfo>
+            <ParticipantDetail>
+              <ParticipantName>{participant.fullName}</ParticipantName>
+              <ParticipantEmail>{participant.email}</ParticipantEmail>
+            </ParticipantDetail>
+          </ParticipantInfo>
+        </ParticipantListItem>
       ))}
     </>
   );

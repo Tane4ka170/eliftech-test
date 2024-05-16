@@ -3,6 +3,13 @@ import Input from 'components/Input/Input';
 import ParticipantsList from 'components/ParticipantsList/ParticipantsList';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import {
+  BackLink,
+  ErrorMessage,
+  EventContainer,
+  ListContainer,
+  NoParticipantsMessage,
+} from './Event.styled';
 
 const Event = () => {
   const [participants, setParticipants] = useState([]);
@@ -29,28 +36,33 @@ const Event = () => {
   );
 
   return (
-    <div>
+    <EventContainer>
+      <BackLink to="/">Go back</BackLink>
       {participants.length > 0 ? (
         <>
           <Input onChange={e => setFilter(e.target.value)} />
-          <ul>
+          <ListContainer>
             {filteredParticipants.length > 0 ? (
               <ParticipantsList participants={filteredParticipants} />
             ) : (
-              <p>No participants match the filter</p>
+              <NoParticipantsMessage>
+                No participants match the filter
+              </NoParticipantsMessage>
             )}
-          </ul>
+          </ListContainer>
         </>
       ) : (
         <>
           {error ? (
-            <p>{error}</p>
+            <ErrorMessage>{error}</ErrorMessage>
           ) : (
-            <p>There are no participants for the meeting yet</p>
+            <NoParticipantsMessage>
+              There are no participants for the meeting yet
+            </NoParticipantsMessage>
           )}
         </>
       )}
-    </div>
+    </EventContainer>
   );
 };
 
