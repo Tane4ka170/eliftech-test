@@ -6,6 +6,17 @@ import { useForm } from 'react-hook-form';
 import { addToEventSchema } from 'schemas/schemas';
 import { Loader } from 'components/Loader/Loader';
 import toast from 'react-hot-toast';
+import {
+  ErrorMsg,
+  FormContainer,
+  FormGroup,
+  Input,
+  Label,
+  RadioGroup,
+  Section,
+  SubmitButton,
+  Title,
+} from './Form.styled';
 
 const Form = () => {
   const [title, setTitle] = useState(null);
@@ -42,7 +53,7 @@ const Form = () => {
       fullName: '',
       email: '',
       dateOfBirth: '',
-      source: 'social media', // Default value should match one of the options
+      source: 'social media',
     },
   });
 
@@ -61,52 +72,52 @@ const Form = () => {
   };
 
   return (
-    <div>
-      <div>
-        <h1>{title}</h1>
+    <FormContainer>
+      <Section>
+        <Title>{title}</Title>
         <p>
           Fill out the form below to register for the upcoming tech conference.
         </p>
-      </div>
-      <div>
+      </Section>
+      <Section>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <div>
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                placeholder="Enter your full name"
-                {...register('fullName')}
-              />
-              {errors.fullName && <p>{errors.fullName.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                {...register('email')}
-              />
-              {errors.email && <p>{errors.email.message}</p>}
-            </div>
-          </div>
-          <div>
-            <label htmlFor="dateOfBirth">Date of Birth</label>
-            <input
+          <FormGroup>
+            <Label htmlFor="fullName">Full Name</Label>
+            <Input
+              id="fullName"
+              name="fullName"
+              type="text"
+              placeholder="Enter your full name"
+              {...register('fullName')}
+            />
+            {errors.fullName && <ErrorMsg>{errors.fullName.message}</ErrorMsg>}
+          </FormGroup>
+          <FormGroup>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              {...register('email')}
+            />
+            {errors.email && <ErrorMsg>{errors.email.message}</ErrorMsg>}
+          </FormGroup>
+          <FormGroup>
+            <Label htmlFor="dateOfBirth">Date of Birth</Label>
+            <Input
               id="dateOfBirth"
               name="dateOfBirth"
               type="date"
               {...register('dateOfBirth')}
             />
-            {errors.dateOfBirth && <p>{errors.dateOfBirth.message}</p>}
-          </div>
-          <div>
-            <label>How did you hear about this event?</label>
-            <div role="group" aria-labelledby="radio-group">
+            {errors.dateOfBirth && (
+              <ErrorMsg>{errors.dateOfBirth.message}</ErrorMsg>
+            )}
+          </FormGroup>
+          <FormGroup>
+            <Label>How did you hear about this event?</Label>
+            <RadioGroup role="group" aria-labelledby="radio-group">
               <div>
                 <input
                   id="social-media"
@@ -115,7 +126,7 @@ const Form = () => {
                   value="social media"
                   {...register('source')}
                 />
-                <label htmlFor="social-media">Social Media</label>
+                <Label htmlFor="social-media">Social Media</Label>
               </div>
               <div>
                 <input
@@ -125,7 +136,7 @@ const Form = () => {
                   value="friends"
                   {...register('source')}
                 />
-                <label htmlFor="friends">Friends</label>
+                <Label htmlFor="friends">Friends</Label>
               </div>
               <div>
                 <input
@@ -135,18 +146,18 @@ const Form = () => {
                   value="found myself"
                   {...register('source')}
                 />
-                <label htmlFor="found-myself">Found myself</label>
+                <Label htmlFor="found-myself">Found myself</Label>
               </div>
-            </div>
-            {errors.source && <p>{errors.source.message}</p>}
-          </div>
+            </RadioGroup>
+            {errors.source && <ErrorMsg>{errors.source.message}</ErrorMsg>}
+          </FormGroup>
 
-          <button type="submit" disabled={loading}>
+          <SubmitButton type="submit" disabled={loading}>
             {loading ? <Loader /> : 'Register'}
-          </button>
+          </SubmitButton>
         </form>
-      </div>
-    </div>
+      </Section>
+    </FormContainer>
   );
 };
 
