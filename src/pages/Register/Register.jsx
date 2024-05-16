@@ -1,12 +1,14 @@
 import Form from 'components/Form/Form';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { BackLink, RegisterContainer } from './Register.styled';
 
 const Register = () => {
   return (
-    <div>
-      <button>Co back</button>
+    <RegisterContainer>
+      <BackLink to="/">Go back</BackLink>
       <Form />
-    </div>
+    </RegisterContainer>
   );
 };
 
