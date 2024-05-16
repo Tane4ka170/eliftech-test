@@ -13,39 +13,41 @@ import {
   Title,
 } from './Home.styled';
 
-const fetchData = async (page, setEvents, setIsLoading, setPage, setError) => {
-  setIsLoading(true);
-  try {
-    const data = await fetchEvents(page);
-    setEvents(prevEvents => [...prevEvents, ...data.events]);
-    const isLoadMore = page < Math.ceil(data.totalEvents / 9);
-    if (!isLoadMore) {
-      toast('Events are over');
-    }
-  } catch (error) {
-    setError(error.message);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setIsLoading] = useState(false);
   const [select, setSelect] = useState('');
+  const [hasMoreEvents, setHasMoreEvents] = useState(true);
 
   const bottomBoundaryRef = useRef(null);
 
   useEffect(() => {
-    fetchData(page, setEvents, setIsLoading, setPage, setError);
-  }, [page, setEvents, setIsLoading, setPage, setError]);
+    const fetchDataAndSetPage = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchEvents(page);
+        setEvents(prevEvents => [...prevEvents, ...data.events]);
+        const isLoadMore = page < Math.ceil(data.totalEvents / 10);
+        if (!isLoadMore) {
+          setHasMoreEvents(false);
+          toast('Events are over');
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDataAndSetPage();
+  }, [page]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting && !loading) {
+        if (entries[0].isIntersecting && !loading && hasMoreEvents) {
           setPage(prevPage => prevPage + 1);
         }
       },
@@ -53,7 +55,7 @@ const Home = () => {
     );
 
     const currentRef = bottomBoundaryRef.current;
-    if (currentRef) {
+    if (currentRef && !loading && hasMoreEvents) {
       observer.observe(currentRef);
     }
 
@@ -62,7 +64,7 @@ const Home = () => {
         observer.unobserve(currentRef);
       }
     };
-  }, [loading, setPage]);
+  }, [loading, setPage, hasMoreEvents]);
 
   const onChange = e => {
     if (!e) return;
