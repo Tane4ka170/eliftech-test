@@ -153,7 +153,7 @@ const Form = () => {
           </FormGroup>
 
           <SubmitButton type="submit" disabled={loading}>
-            {loading ? <Loader /> : 'Register'}
+            {loading ? '' : 'Register'}
           </SubmitButton>
         </form>
       </Section>

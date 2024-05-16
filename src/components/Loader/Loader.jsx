@@ -1,8 +1,9 @@
 import { Discuss } from 'react-loader-spinner';
+import { LoaderWrapper } from './Loader.styled';
 
 export const Loader = () => {
   return (
-    <div>
+    <LoaderWrapper>
       <Discuss
         visible={true}
         height="80"
@@ -10,9 +11,9 @@ export const Loader = () => {
         ariaLabel="discuss-loading"
         wrapperStyle={{}}
         wrapperClass="discuss-wrapper"
-        color="#fff"
-        backgroundColor="#528193"
+        color="#528193"
+        backgroundColor="#3c5bb0"
       />
-    </div>
+    </LoaderWrapper>
   );
 };
